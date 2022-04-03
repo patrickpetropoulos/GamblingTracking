@@ -44,9 +44,11 @@ namespace Server.WebApp.Controllers
     [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin" )]
     public async Task<IActionResult> Get()
     {
+      var user = ClaimManager.GetUserFromClaims( User, _context );
+
       var output = new
       {
-        Test = "hello"
+        Test = "hello " + user.Email
       };
 
       return new ObjectResult( output );
@@ -67,12 +69,14 @@ namespace Server.WebApp.Controllers
                   where ur.UserId == user.Id
                   select new { ur.UserId, ur.RoleId, r.Name };
 
+      var expirationDate = new DateTimeOffset( DateTime.Now.AddDays( 10 ) );
+
       var claims = new List<Claim>
             {
                 new Claim("username", user.UserName),
                 new Claim("email", user.Email),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(10)).ToUnixTimeSeconds().ToString())
+                new Claim(JwtRegisteredClaimNames.Exp, expirationDate.ToUnixTimeSeconds().ToString())
             };
 
       foreach( var role in roles )
@@ -90,9 +94,7 @@ namespace Server.WebApp.Controllers
       var output = new
       {
         AccessToken = new JwtSecurityTokenHandler().WriteToken( token ),
-        UserName = username,
-        //user.FirstName,
-        //user.LastName
+        Expiration = expirationDate.ToString(),
       };
 
       return output;

@@ -61,7 +61,12 @@ builder.Services.AddAuthorization( options =>
 } );
 
 
+
 var app = builder.Build();
+
+ServerSystem.CreateInstance( app.Services, builder.Configuration );
+//ServerSystem.Instance.SetLogger( builder.Services. );
+//ServerSystem.Instance.SetServiceProvider( app.ApplicationServices );
 
 // Configure the HTTP request pipeline.
 if( app.Environment.IsDevelopment() )
@@ -69,7 +74,7 @@ if( app.Environment.IsDevelopment() )
   app.UseSwagger();
   app.UseSwaggerUI();
 }
-
+//fix when have a frontend
 app.UseCors( "AllowAll" );
 app.UseHttpsRedirection();
 

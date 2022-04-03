@@ -24,11 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Server.Root\Server.Root.csproj" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <ProjectReference Include="..\Server.Application\Server.Application.csproj" />
+    <ProjectReference Include="..\Server.Infrastructure.Common.SQL\Server.Infrastructure.SQL.csproj" />
+    <ProjectReference Include="..\Server.Infratructure.Common\Server.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Server.Application.Managers;
+using Server.Infrastructure.SQL.Managers;
 
 namespace Server.WebApp.Controllers
 {
@@ -24,14 +26,18 @@ namespace Server.WebApp.Controllers
       _userManager = userManager;
       _roleManager = roleManager;
       _configuration = configuration;
+
+      
     }
 
     [HttpGet( Name = "GetWeatherForecast" )]
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
 
-     await  OnStartup.CreateRoles( _userManager, _roleManager, _configuration );
+      //await  OnStartup.CreateRoles( _userManager, _roleManager, _configuration );
 
+      var seed = new SeedDatabase();
+      await seed.Seed();
 
       return Enumerable.Range( 1, 5 ).Select( index => new WeatherForecast
       {

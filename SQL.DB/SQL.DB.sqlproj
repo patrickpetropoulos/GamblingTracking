@@ -63,8 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Casinos.sql" />
-    <Build Include="dbo\Tables\GameType.sql" />
+    <Build Include="dbo\Tables\CasinoGames.sql" />
     <Build Include="dbo\Tables\GamblingSession.sql" />
+    <Build Include="dbo\Stored Procedures\SelectAllCasinos.sql" />
+    <Build Include="dbo\Stored Procedures\InsertCasino.sql" />
+    <Build Include="dbo\Stored Procedures\SelectAllCasinoGames.sql" />
+    <Build Include="dbo\Stored Procedures\InsertCasinoGame.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublshLocations\Local-Dev-DB.publish.xml" />
