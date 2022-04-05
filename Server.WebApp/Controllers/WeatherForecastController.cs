@@ -34,7 +34,7 @@ namespace Server.WebApp.Controllers
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
 
-      //await  OnStartup.CreateRoles( _userManager, _roleManager, _configuration );
+      await  OnStartup.CreateRoles( _userManager, _roleManager, _configuration );
 
       var seed = new SeedDatabase();
       await seed.Seed();

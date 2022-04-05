@@ -29,6 +29,10 @@ namespace Server.WebApp.Controllers
     //TODO move params into body of request, figure out
     public async Task<IActionResult> Create( string username, string password )
     {
+      //have db table for all tokens given out, if for user has one, put it on blacklist and give new one,
+      //this manages the refresh I guess
+
+
       if( await IsValidLoginInfo( username, password ) )
       {
         return new ObjectResult( await GenerateToken( username ) );
