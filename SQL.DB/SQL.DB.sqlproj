@@ -73,5 +73,6 @@
   <ItemGroup>
     <None Include="PublshLocations\Local-Dev-DB.publish.xml" />
     <None Include="PublshLocations\Azure-Dev-DB.publish.xml" />
+    <None Include="PublshLocations\Local-Testing-DB.publish.xml" />
   </ItemGroup>
 </Project>

@@ -350,3 +350,7 @@ MigrationBackup/
 .ionide/
 
 Server.WebApp/appsettings.Development.json
+
+IntegrationTests/appsettings.Development.json
+
+Server.WebApp/appsettings.Testing.json

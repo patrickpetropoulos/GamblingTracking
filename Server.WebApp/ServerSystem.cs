@@ -29,7 +29,7 @@ namespace Server.WebApp
 
       var test = Type.GetType( configuration["Casino:Manager"] );
       //In appsettings, its full namespace of file + filename, then comma, then full name of project it is in
-      var casinoManager = ActivatorUtilities.CreateInstance(services, Type.GetType(configuration["Casino:Manager"]), new object[] { configuration } ) as ICasinoManager; 
+      var casinoManager = ActivatorUtilities.CreateInstance(services, Type.GetType(configuration["Casino:Manager"]), new object[] { configuration } ) as ICasinoManager;
       _services.Add("CasinoManager", casinoManager);
 
       var casinoGameManager = ActivatorUtilities.CreateInstance( services, Type.GetType( configuration["CasinoGame:Manager"] ), new object[] { configuration } ) as ICasinoGameManager;

@@ -44,6 +44,8 @@ namespace Server.WebApp
       }
       else
       {
+        var test = Configuration["ConnectionStrings:SQL"];
+
         services.AddDbContext<ApplicationDbContext>( options =>
              options.UseSqlServer(
                  Configuration.GetConnectionString( "SQL" ),
