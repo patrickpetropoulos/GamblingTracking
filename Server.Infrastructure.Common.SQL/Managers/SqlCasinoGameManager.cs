@@ -89,7 +89,7 @@ namespace Server.Infrastructure.SQL.Managers
 
           sqlCmd.Parameters.Add( "@id", SqlDbType.Int ).Direction = ParameterDirection.Output;
 
-          sqlCmd.ExecuteNonQuery();
+          await sqlCmd.ExecuteNonQueryAsync();
           string id = sqlCmd.Parameters["@id"].Value.ToString();
           return int.Parse( id );
         }

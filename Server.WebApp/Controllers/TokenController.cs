@@ -25,7 +25,7 @@ namespace Server.WebApp.Controllers
     }
 
     [Route( "/token" )]
-    [HttpPost]
+    [HttpGet]
     //TODO move params into body of request, figure out
     public async Task<IActionResult> Create( string username, string password )
     {
@@ -54,6 +54,8 @@ namespace Server.WebApp.Controllers
       {
         Test = "hello " + user.Email
       };
+
+      await Task.Delay( 1000 );
 
       return new ObjectResult( output );
     }

@@ -13,11 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -35,7 +30,7 @@
     <PackageReference Include="FluentAssertions" Version="6.2.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="Respawn" Version="4.0.0" /> 
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="4.0.0" /> 
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" /> 
   </ItemGroup>
 
   <ItemGroup>

@@ -6,8 +6,8 @@ namespace Server.WebApp
 {
   public class SeedDatabase
   {
-    private List<Casino> _casinoList;
-    private List<CasinoGame> _casinoGames;
+    public List<Casino> _casinoList;
+    public List<CasinoGame> _casinoGames;
     public SeedDatabase()
     {
       _casinoList = new List<Casino>();

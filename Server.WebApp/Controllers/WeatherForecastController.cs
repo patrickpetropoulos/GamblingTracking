@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Managers;
@@ -30,6 +32,7 @@ namespace Server.WebApp.Controllers
       
     }
 
+    [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin" )]
     [HttpGet( Name = "GetWeatherForecast" )]
     public async Task<IEnumerable<WeatherForecast>> Get()
     {

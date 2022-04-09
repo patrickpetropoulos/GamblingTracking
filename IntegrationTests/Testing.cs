@@ -12,7 +12,10 @@ using Server.WebApp;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Server.Domain.Utilities;
 
 namespace IntegrationTests;
 
@@ -24,33 +27,77 @@ public class Testing
   private static Checkpoint _checkpoint = null!;
   private static string? _currentUserId;
 
-  [OneTimeSetUp]
-  public void RunBeforeAnyTests()
+  public static WebApplicationFactory<Program>? _app = null;
+  private static string _token;
+
+  public static HttpClient GetClient()
   {
-    var application = new WebApplicationFactory<Program>()
-      .WithWebHostBuilder( builder =>
-    {
+    var client = Testing._app?.CreateClient();
+    client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Bearer {_token}");
 
-      builder.UseEnvironment( "Testing" );
+    return client;
+  }
+  
+  public static HttpClient GetClient(string token)
+  {
+    var client = Testing._app?.CreateClient();
+    client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Bearer {token}");
 
-      //var configBuilder = new ConfigurationBuilder()
-      //  .SetBasePath( Directory.GetCurrentDirectory() )
-      //  .AddJsonFile( "appsettings.Development.json", true, true )
-      //  .AddEnvironmentVariables();
+    return client;
+  }
+  
+  
+  [OneTimeSetUp]
+  public async Task RunBeforeAnyTests()
+  {
+    _app = new WebApplicationFactory<Program>()
+      .WithWebHostBuilder(builder =>
+      {
 
-      //_configuration = configBuilder.Build();
+        builder.UseEnvironment("Testing");
 
-      //var startup = new Startup( _configuration );
+        //var startup = new Startup( _configuration );
 
-      //builder.UseStartup<Startup>();
+        //builder.UseStartup<Startup>();
 
 
-      // ... Configure test services
-    } );
+        // ... Configure test services
+      });
+    
+    //put code here to create app
+    //delete all users and stuff from database
+    //delete all other data from database
+    //seed database
+      
+    var configBuilder = new ConfigurationBuilder()
+      .SetBasePath( Directory.GetCurrentDirectory() )
+      .AddJsonFile( "appsettings.Testing.json", true, true )
+      .AddEnvironmentVariables();
 
-    var client = application.CreateClient();
+    var _configuration = configBuilder.Build();
 
-    var response = client.GetAsync( "/weatherForecast" ).GetAwaiter().GetResult();
+    var username = _configuration["PowerUser:Username"];
+    var password = _configuration["PowerUser:Password"];
+      
+    var client = _app?.CreateClient();
+    var response = await client.GetAsync( $"/token?username={username}&password={password}" );
+      
+    var result = await response.Content.ReadAsStringAsync();
+    var json = JObject.Parse(result);
+
+    _token = JSONUtilities.GetString(json, "accessToken");
+  }
+
+  [OneTimeTearDown]
+  public async Task RunAfterAllTests()
+  {
+    // var client = Testing._app?.CreateClient();
+    //
+    // var response = await client.GetAsync( "/weatherForecast" );
+    // var result = await response.Content.ReadAsStringAsync();
+    // var json = JArray.Parse(result);
+    
+  }
 
     //var builder = new ConfigurationBuilder()
     //    .SetBasePath( Directory.GetCurrentDirectory() )
@@ -93,7 +140,6 @@ public class Testing
     //};
 
     //EnsureDatabase();
-  }
 
   private static void EnsureDatabase()
   {

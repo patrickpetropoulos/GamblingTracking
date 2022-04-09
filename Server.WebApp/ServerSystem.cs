@@ -8,13 +8,8 @@ namespace Server.WebApp
 
     private readonly static object _instanceLock = new Object();
     private readonly static object _serviceProviderLock = new Object();
-    private static ServerSystem _instance;
-    private static IServiceProvider _serviceProvider;
-
-    protected ServerSystem()
-    {
-
-    }
+    private static ServerSystem? _instance;
+    private static IServiceProvider? _serviceProvider;
 
     protected ServerSystem( IServiceProvider services, IConfiguration configuration )
     {
@@ -27,22 +22,37 @@ namespace Server.WebApp
       //SportsBookManager = sportsBookManager;
       //_services.Add( "SportsBookManager", sportsBookManager );
 
-      var test = Type.GetType( configuration["Casino:Manager"] );
+
       //In appsettings, its full namespace of file + filename, then comma, then full name of project it is in
-      var casinoManager = ActivatorUtilities.CreateInstance(services, Type.GetType(configuration["Casino:Manager"]), new object[] { configuration } ) as ICasinoManager;
-      _services.Add("CasinoManager", casinoManager);
 
-      var casinoGameManager = ActivatorUtilities.CreateInstance( services, Type.GetType( configuration["CasinoGame:Manager"] ), new object[] { configuration } ) as ICasinoGameManager;
-      _services.Add( "CasinoGameManager", casinoGameManager );
-
-    }
-    public static void CreateInstance()
-    {
-      lock( _instanceLock )
+      var config = Type.GetType( configuration["Casino:Manager"] );
+      if( config != null )
       {
-        _instance = new ServerSystem();
+        var casinoManager = ActivatorUtilities.CreateInstance( services, config, new object[] { configuration } ) as ICasinoManager;
+        if( casinoManager != null )
+        {
+          _services.Add( "CasinoManager", casinoManager );
+        }
       }
+      config = Type.GetType( configuration["CasinoGame:Manager"] );
+      if( config != null )
+      {
+        var casinoGameManager = ActivatorUtilities.CreateInstance( services, config, new object[] { configuration } ) as ICasinoGameManager;
+
+        if( casinoGameManager != null )
+        {
+          _services.Add( "CasinoGameManager", casinoGameManager );
+        }
+      }
+
     }
+    //public static void CreateInstance()
+    //{
+    //  lock( _instanceLock )
+    //  {
+    //    _instance = new ServerSystem();
+    //  }
+    //}
     public static void CreateInstance( IServiceProvider services, IConfiguration configuration )
     {
       lock( _instanceLock )
@@ -50,7 +60,7 @@ namespace Server.WebApp
         _instance = new ServerSystem( services, configuration );
       }
     }
-    public static ServerSystem Instance
+    public static ServerSystem? Instance
     {
       get
       {
@@ -60,10 +70,10 @@ namespace Server.WebApp
         }
       }
     }
-    public T Get<T>( String name ) where T : class
+    public T? Get<T>( String name ) where T : class
     {
       if( !_services.ContainsKey( name ) )
-        return (T)null;
+        return null;
 
       return (T)_services[name];
     }

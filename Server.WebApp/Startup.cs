@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Server.WebApp
 {
@@ -35,6 +37,7 @@ namespace Server.WebApp
       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
       services.AddEndpointsApiExplorer();
       services.AddSwaggerGen();
+      
 
       if( Configuration.GetValue<bool>( "UseInMemoryDatabase" ) )
       {
@@ -65,7 +68,12 @@ namespace Server.WebApp
                       .AddRoles<ApplicationRole>()
                       .AddEntityFrameworkStores<ApplicationDbContext>()
                       .AddDefaultTokenProviders();
-
+      
+      services.AddControllers()
+        .AddNewtonsoftJson(jsonOptions =>
+        {
+          jsonOptions.SerializerSettings.Converters.Add(new StringEnumConverter());
+        });
 
       services.AddRazorPages();
 
@@ -124,6 +132,13 @@ namespace Server.WebApp
       {
         app.UseSwagger();
         app.UseSwaggerUI();
+      }
+
+      if (env.IsEnvironment("Testing"))
+      {
+        var fd = 23;
+        var context = serviceProvider.GetService<ApplicationDbContext>();
+        context?.Database.Migrate();
       }
       //fix when have a frontend
       app.UseCors( "AllowAll" );
