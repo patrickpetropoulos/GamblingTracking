@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Sports.Application;
+using Sports.Application.Espn;
 
 namespace Sports.UnitTests
 {
@@ -16,6 +20,21 @@ namespace Sports.UnitTests
 
             var parser = new MlbLineupsParser();
             await parser.ParseLineups(html);
+        }
+        
+        [Test]
+        public void ValidateMovieParser_ParsesEspnMlbFileCorrectly()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream("Sports.UnitTests.TestData.Espn.Espn MLB Api 04-11-2022 situation in blue jays yankees game.json"))
+            using (var reader = new StreamReader(stream))
+            {
+                string text = reader.ReadToEnd();
+                var result = EspnApiParser.ParseMlbGames(JObject.Parse(text));
+                var t = 3;
+
+                Assert.AreEqual(12, ((JArray)result["games"]).Count);
+            }
         }
     }
 }

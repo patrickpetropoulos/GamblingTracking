@@ -45,8 +45,13 @@ namespace Server.Infrastructure.SQL.Managers
       if( casino.Id <= 0 )
       {
         //what to do with int??? move this logic up, have an insert call???
-        await DatabaseUtilities.ExecuteAsync<int>( _connectionString,
+        var result = await DatabaseUtilities.ExecuteAsync<int>( _connectionString,
                 async ( c ) => await InsertCasino( c, casino ) );
+        casino.Id = result;
+      }
+      else
+      {
+        //Code for updating a casino
       }
     }
 

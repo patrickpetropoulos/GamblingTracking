@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Server.Application\Server.Application.csproj" />
     <ProjectReference Include="..\Server.Infrastructure.Common.SQL\Server.Infrastructure.SQL.csproj" />
     <ProjectReference Include="..\Server.Infratructure.Common\Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Sports.Application\Sports.Application.csproj" />
   </ItemGroup>
 
 </Project>

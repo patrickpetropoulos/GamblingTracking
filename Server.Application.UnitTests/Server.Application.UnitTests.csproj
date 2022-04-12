@@ -23,15 +23,7 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\Sports.Application\Sports.Application.csproj" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Remove="TestData\Espn\Espn MLB Api 04-11-2022 situation in blue jays yankees game.json" />
-      <EmbeddedResource Include="TestData\Espn\Espn MLB Api 04-11-2022 situation in blue jays yankees game.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
+        <ProjectReference Include="..\Server.Application\Server.Application.csproj" />
     </ItemGroup>
 
 

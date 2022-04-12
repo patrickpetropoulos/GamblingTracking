@@ -9,5 +9,13 @@
       <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Mlb" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Server.Domain\Server.Domain.csproj" />
+    </ItemGroup>
+
 
 </Project>

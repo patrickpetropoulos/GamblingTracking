@@ -1,48 +1,19 @@
 ﻿using Server.Application.Managers;
 using Server.Domain.Entities;
 using System.Linq;
+using Server.Domain.Testing;
 
 namespace Server.WebApp
 {
   public class SeedDatabase
   {
     public List<Casino> _casinoList;
-    public List<CasinoGame> _casinoGames;
+    public List<CasinoGame> _casinoGamesList;
     public SeedDatabase()
     {
-      _casinoList = new List<Casino>();
-      _casinoList.Add( new Casino()
-      {
-        Name = "Borgata",
-        CountryCode = "US"
-      } );
-      _casinoList.Add( new Casino()
-      {
-        Name = "Bellagio",
-        CountryCode = "US"
-      } );
-      _casinoList.Add( new Casino()
-      {
-        Name = "Montreal Casino",
-        CountryCode = "CA"
-      } );
+      _casinoList = ExampleData.GetListOfCasinos();
+      _casinoGamesList = ExampleData.GetListOfCasinoGames();
 
-      _casinoGames = new List<CasinoGame>();
-      _casinoGames.Add( new CasinoGame()
-      {
-        Name = "Blackjack",
-        HasSubType = false
-      } );
-      _casinoGames.Add( new CasinoGame()
-      {
-        Name = "Craps",
-        HasSubType = false
-      } );
-      _casinoGames.Add( new CasinoGame()
-      {
-        Name = "Video Keno",
-        HasSubType = true
-      } );
     }
 
 
@@ -53,8 +24,6 @@ namespace Server.WebApp
       await SeedGamblingSessions();
 
     }
-
-
     public async Task SeedCasinos()
     {
       var casinoManager = ServerSystem.Instance.Get<ICasinoManager>( "CasinoManager" );
@@ -81,14 +50,14 @@ namespace Server.WebApp
       var currentGames = await casinoGameManager.GetAllCasinoGames();
       if( !currentGames.Any() )
       {
-        foreach( var casinoGame in _casinoGames )
+        foreach( var casinoGame in _casinoGamesList )
         {
           await casinoGameManager.UpsertCasinoGame( casinoGame );
         }
       }
       else
       {
-        _casinoGames = currentGames;
+        _casinoGamesList = currentGames;
       }
     }
 
@@ -97,7 +66,7 @@ namespace Server.WebApp
       var session = new GamblingSession()
       {
         Casino = _casinoList[0],
-        CasinoGame = _casinoGames[0],
+        CasinoGame = _casinoGamesList[0],
         StartingAmount = 0,
         EndingAmount = 230.50M
 

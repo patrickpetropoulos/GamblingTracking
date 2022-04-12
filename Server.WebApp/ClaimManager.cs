@@ -7,9 +7,10 @@ namespace Server.WebApp
 
     public static ApplicationUser GetUserFromClaims( ClaimsPrincipal user, ApplicationDbContext context )
     {
-      var userEmail = user.Claims.Where( c => c.Type.Equals( "email" ) ).First().Value;
+      //TODO add try catch
+      var userEmail = user.Claims.First(c => c.Type.Equals( "email" )).Value;
 
-      return context.Users.Where( c => c.Email.Equals( userEmail ) ).First();
+      return context.Users.First(c => c.Email.Equals( userEmail ));
     }
 
   }

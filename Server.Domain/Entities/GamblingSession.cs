@@ -15,6 +15,11 @@ namespace Server.Domain.Entities
     public decimal StartingAmount { get; set; }
     public decimal EndingAmount { get; set; }
 
+    public GamblingSession()
+    {
+      Id = Guid.NewGuid();
+    }
+
     public void FromJson( JObject json )
     {
       Id = JSONUtilities.GetNullableGuid( json, "id" );
